@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { RECIPES, Recipe } from '../data/mock_data';
-import { RecipeListResponseDto, RecipeResponseDto } from './recipe.dto';
+import { CreateRecipeRequestDto, RecipeListResponseDto, RecipeResponseDto } from './recipe.dto';
 
 @Injectable()
 export class RecipeService {
@@ -17,4 +17,14 @@ export class RecipeService {
 
     return recipe;
   }
+  
+    create(dto: CreateRecipeRequestDto): RecipeResponseDto {
+    const newRecipe: Recipe = {
+      id: Math.max(0, ...RECIPES.map((item: Recipe) => item.id)) + 1,
+      ...dto,
+    };
+    RECIPES.push(newRecipe);
+    return newRecipe;
+  }
 }
+
