@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
-import { RecipeListResponseDto, RecipeResponseDto, CreateRecipeRequestDto } from './recipe.dto';
-import { Body, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { RecipeListResponseDto, RecipeResponseDto, CreateRecipeRequestDto, UpdateRecipeRequestDto } from './recipe.dto';
+import { Body, HttpCode, HttpStatus, Post, Put, Delete } from '@nestjs/common';
 
 @Controller('recipes')
 export class RecipeController {
@@ -21,6 +21,20 @@ export class RecipeController {
     @HttpCode(HttpStatus.CREATED)
     createRecipe(@Body() dto: CreateRecipeRequestDto): RecipeResponseDto {
         return this.recipeService.create(dto);
+  }
+
+    @Put(':id')
+    updateRecipe(
+        @Param('id') id: string,
+        @Body() dto: UpdateRecipeRequestDto,
+  ): RecipeResponseDto {
+        return this.recipeService.updateById(Number(id), dto);
+  }
+
+    @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteRecipe(@Param('id') id: string): void {
+    this.recipeService.deleteById(Number(id));
   }
   
 }
